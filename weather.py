@@ -96,6 +96,10 @@ def find_min(weather_data):
             return float(weather_data[-1]), len(weather_data)-1
         else:
             return float(min_value), (min_index)
+    try:
+        weather_data()
+    except:
+        ValueError
 
     
     
@@ -118,6 +122,10 @@ def find_max(weather_data):
             return float(max_value), weather_data.index(max_value, weather_data.index(max_value) + 1)
         else:
             return float(max_value), (max_index)
+    try:
+        max_value()
+    except:
+        ValueError
 
 
 def generate_summary(weather_data):

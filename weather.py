@@ -89,17 +89,17 @@ def find_min(weather_data):
     Returns:
         The minimum value and it's position in the list. (In case of multiple matches, return the index of the *last* example in the list.)
     """
-    min_value = min(weather_data)
-    min_index = weather_data.index(min_value)
-    for item in weather_data:
-        if weather_data.count(item) == 2:
-            return float(weather_data[-1]), len(weather_data)-1
-        else:
-            return float(min_value), (min_index)
-    try:
-        weather_data()
-    except:
-        ValueError
+    if weather_data != []:
+        min_value = min(weather_data)
+        min_index = weather_data.index(min_value)
+    
+        for item in weather_data:
+            if weather_data.count(item) == 2:
+                return float(weather_data[-1]), len(weather_data)-1
+            else:
+                return float(min_value), (min_index)
+    else: 
+        return ()
 
     
     
@@ -115,17 +115,16 @@ def find_max(weather_data):
     Returns:
         The maximum value and it's position in the list. (In case of multiple matches, return the index of the *last* example in the list.)
     """
-    max_value = max(weather_data)
-    max_index = weather_data.index(max_value)
-    for item in weather_data: 
-        if weather_data.count(max_value) == 2:
-            return float(max_value), weather_data.index(max_value, weather_data.index(max_value) + 1)
-        else:
-            return float(max_value), (max_index)
-    try:
-        max_value()
-    except:
-        ValueError
+    if weather_data != []:
+        max_value = max(weather_data)
+        max_index = weather_data.index(max_value)
+        for item in weather_data: 
+            if weather_data.count(max_value) == 2:
+                return float(max_value), weather_data.index(max_value, weather_data.index(max_value) + 1)
+            else:
+                return float(max_value), (max_index)
+    else:
+        return ()
 
 
 def generate_summary(weather_data):
@@ -136,7 +135,11 @@ def generate_summary(weather_data):
     Returns:
         A string containing the summary information.
     """
-    pass
+    convert_data = map(str, weather_data)
+    days_data = "".join(convert_data)
+    return days_data
+
+
 
 
 def generate_daily_summary(weather_data):

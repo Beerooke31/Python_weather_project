@@ -40,7 +40,7 @@ def convert_f_to_c(temp_in_fahrenheit):
     Returns:
         A float representing a temperature in degrees Celcius, rounded to 1 decimal place.
     """
-    c_temp = ((float(temp_in_fahrenheit) -32)/1.8)
+    c_temp = ((float(temp_in_fahrenheit) -32) * (5 / 9))
     round_c_temp = round(c_temp, 1)
     return round_c_temp
 
@@ -95,11 +95,12 @@ def find_min(weather_data):
     
         for item in weather_data:
             if weather_data.count(item) == 2:
-                return float(weather_data[-1]), len(weather_data)-1
+                return (float(weather_data[-1]), len(weather_data)-1)
             else:
-                return float(min_value), (min_index)
+                return float(min_value), min_index
     else: 
         return ()
+
 
     
     
@@ -120,9 +121,9 @@ def find_max(weather_data):
         max_index = weather_data.index(max_value)
         for item in weather_data: 
             if weather_data.count(max_value) == 2:
-                return float(max_value), weather_data.index(max_value, weather_data.index(max_value) + 1)
+                return (float(max_value), weather_data.index(max_value, weather_data.index(max_value) + 1))
             else:
-                return float(max_value), (max_index)
+                return (float(max_value), (max_index))
     else:
         return ()
 
@@ -135,9 +136,59 @@ def generate_summary(weather_data):
     Returns:
         A string containing the summary information.
     """
-    convert_data = map(str, weather_data)
-    days_data = "".join(convert_data)
-    return days_data
+
+    dates = []
+    min_temps_f = []
+    max_temps_f = []
+
+    for day in weather_data:
+        dates.append(day[0])
+        min_temps_f.append(find_min(day[1:]))
+        max_temps_f.append(find_max(day[1:]))
+
+    all_mins = []
+    min_indexes = []
+    for item in min_temps_f:
+        (min_temps, min_temps_index) = item
+        all_mins.append(min_temps)
+        min_indexes.append(min_temps_index)
+
+    (min_of_mins, min_date_index) = find_min(all_mins)
+  
+    min_temps_date = dates[min_date_index]
+
+    min_date_convert = convert_date(min_temps_date)
+    min_of_c = convert_f_to_c(min_of_mins)
+
+    all_maxes = []
+    max_indexes = []
+    for item in max_temps_f:
+        (max_temps, max_temps_index) = item
+        all_maxes.append(max_temps)
+        max_indexes.append(max_temps_index)
+
+    (max_of_maxes, max_date_index) = find_max(all_maxes)
+  
+    max_temps_date = dates[max_date_index]
+
+    max_date_convert = convert_date(max_temps_date)
+    max_of_c = convert_f_to_c(max_of_maxes)
+
+    avg_low = convert_f_to_c(mean(all_mins))
+    avg_high = convert_f_to_c(mean(all_maxes))
+        
+            
+    # replace hardcoded strings with your variables
+    summary = (
+        f"{len(weather_data)} Day Overview\n"
+        f"  The lowest temperature will be {min_of_c}°C, and will occur on {min_date_convert}.\n"
+        f"  The highest temperature will be {max_of_c}°C, and will occur on {max_date_convert}.\n"
+        f"  The average low this week is {avg_low}°C.\n"
+        f"  The average high this week is {avg_high}°C.\n"
+    )
+
+    return summary
+
 
 
 
@@ -150,4 +201,38 @@ def generate_daily_summary(weather_data):
     Returns:
         A string containing the summary information.
     """
-    pass
+    # summary = ""
+
+    # for data in weather_data:
+    #     date = data[0]
+    #     min_temp_c = convert_f_to_c(float(data[1]))
+    #     max_temp_c = convert_f_to_c(float(data[2]))
+    #     print(min_temp_c)
+    #     print(max)
+    
+        
+    #     summary += (
+    #        f"---- {convert_date(date)} ----\n"
+    #        f"Minimum Temperature: {min_temp_c}°C\n"
+    #        f"Maximum Temperature: {max_temp_c}°C\n\n"
+    #     )
+        
+    # return summary 
+    summary = ""
+    daily_summary = []
+    for item in weather_data:
+        formatted_date = convert_date(item[0])
+        min_temp_c = convert_f_to_c(item[1])
+        formatted_min_temp = format_temperature(min_temp_c)
+        max_temp_c = convert_f_to_c(item[2])
+        formatted_max_temp = format_temperature(max_temp_c)
+        daily_summary.append(
+            [formatted_date, formatted_min_temp, formatted_max_temp])
+
+    for day in daily_summary:
+        date = day[0]
+        ind_min = day[1]
+        ind_max = day[2]
+
+        summary += f"""---- {date} ----\n  Minimum Temperature: {ind_min}\n  Maximum Temperature: {ind_max}\n\n"""
+    return summary

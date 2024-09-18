@@ -201,38 +201,21 @@ def generate_daily_summary(weather_data):
     Returns:
         A string containing the summary information.
     """
-    # summary = ""
+    summary = ""
 
-    # for data in weather_data:
-    #     date = data[0]
-    #     min_temp_c = convert_f_to_c(float(data[1]))
-    #     max_temp_c = convert_f_to_c(float(data[2]))
-    #     print(min_temp_c)
-    #     print(max)
+    for data in weather_data:
+        date = data[0]
+        min_temp_c = convert_f_to_c(float(data[1]))
+        max_temp_c = convert_f_to_c(float(data[2]))
+        print(min_temp_c)
+        print(max)
     
         
-    #     summary += (
-    #        f"---- {convert_date(date)} ----\n"
-    #        f"Minimum Temperature: {min_temp_c}°C\n"
-    #        f"Maximum Temperature: {max_temp_c}°C\n\n"
-    #     )
+        summary += (
+           f"---- {convert_date(date)} ----\n"
+           f"Minimum Temperature: {min_temp_c}°C\n"
+           f"Maximum Temperature: {max_temp_c}°C\n\n"
+        )
         
-    # return summary 
-    summary = ""
-    daily_summary = []
-    for item in weather_data:
-        formatted_date = convert_date(item[0])
-        min_temp_c = convert_f_to_c(item[1])
-        formatted_min_temp = format_temperature(min_temp_c)
-        max_temp_c = convert_f_to_c(item[2])
-        formatted_max_temp = format_temperature(max_temp_c)
-        daily_summary.append(
-            [formatted_date, formatted_min_temp, formatted_max_temp])
-
-    for day in daily_summary:
-        date = day[0]
-        ind_min = day[1]
-        ind_max = day[2]
-
-        summary += f"""---- {date} ----\n  Minimum Temperature: {ind_min}\n  Maximum Temperature: {ind_max}\n\n"""
-    return summary
+    return summary 
+   
